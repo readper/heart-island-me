@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HEART 政策島：我的角色
 // @namespace    https://github.com/readper/heart-island-me
-// @version      0.7.1
+// @version      0.7.2
 // @author       readper
 // @homepageURL  https://github.com/readper/heart-island-me
 // @supportURL   https://github.com/readper/heart-island-me/issues
@@ -57,6 +57,9 @@
     } catch (e) { /* 讀旗標失敗就當作沒關 */ }
     return false;
   };
+
+  // 官網已把這支腳本收錄成內建功能（heart-me.js）：偵測到就讓位，免得面板、角色重複出現
+  const builtIn = () => !!(window.heartIslandAvatar || document.querySelector('script[src*="heart-me.js"]'));
 
   const undo = []; // 清理函式，後進先出
   let dead = false;
@@ -788,7 +791,7 @@
         mk('◀', -1, 0, '往畫面左方'), h('span', { class: 'hm-padc' }, '位置'), mk('▶', 1, 0, '往畫面右方'),
         h('span'), mk('▼', 0, -1, '往畫面近處'), h('span'));
     };
-    const whoName = (actor) => (actor === 'puma' ? 'Puma（複製）' : '我的角色');
+    const whoName = (actor) => (actor === 'puma' ? 'Puma 分身' : '我的角色');
     const placingUI = () => [
       h('div', { class: 'hm-status' }, `放置：${whoName(S.actor)}`),
       h('div', { class: 'hm-note' }, '在場景裡點一個位置：步道旁、建築前、教室黑板前都可以；小島請點島上。可以先拖曳轉好鏡頭再點。'),
@@ -874,7 +877,7 @@
             chips([['__island', '→ 島的中心'], ...sel.buildings.map((b) => [b.id, b.name])], S.mission.targetId,
               (k) => (k === '__island' ? api.goIsland(sel.id) : api.goBuilding(k)))));
         }
-        // 站方原本的路線：依協作流分組
+        // 沿協作線走：依協作流分組
         const byFlow = new Map();
         S.routeInfo.forEach((r, i) => { (byFlow.get(r.flow) || byFlow.set(r.flow, []).get(r.flow)).push([i, r]); });
         const nameOf = (id) => (D.islandById.get(id) ? D.islandById.get(id).name : id);
@@ -890,9 +893,9 @@
             h('summary', {}, h('b', {}, flow), D.flows.get(flow) || ''),
             chips(items, S.mission.routeIdx, (i) => api.setRoute(i)));
         });
-        kids.push(row('站方原本的路線', ...flowEls));
+        kids.push(row('沿協作線走', ...flowEls));
       } else {
-        kids.push(h('div', { class: 'hm-note' }, '讀不到站方的政策資料，只能使用地圖指定。'));
+        kids.push(h('div', { class: 'hm-note' }, '政策資料載入失敗，目前只能用「點地圖指定」。'));
       }
       dyn.replaceChildren(...kids);
     }
@@ -903,7 +906,7 @@
       const kids = [];
       kids.push(row('拍照站位', h('div', { class: 'hm-two' },
         h('button', { class: 'hm-ghost', type: 'button', onclick: () => api.startPlace('me') }, '📌 我的角色'),
-        h('button', { class: 'hm-ghost', type: 'button', onclick: () => api.startPlace('puma') }, '📌 Puma（複製）'))));
+        h('button', { class: 'hm-ghost', type: 'button', onclick: () => api.startPlace('puma') }, '📌 Puma 分身'))));
       const tools = [];
       if (S.stand) tools.push(h('button', { class: 'hm-chip', type: 'button', onclick: () => api.leaveStand() }, '解除定點，繼續漫步'));
       if (S.puma && S.puma.fig.group.visible) tools.push(h('button', { class: 'hm-chip', type: 'button', onclick: () => api.removePuma() }, '收回 Puma'));
@@ -1499,7 +1502,7 @@
       }
     }
 
-    // ── 定點站立（拍照用）：把「我的角色」或「Puma（複製）」放到指定位置、指定面向。
+    // ── 定點站立（拍照用）：把「我的角色」或「Puma 分身」放到指定位置、指定面向。
     // 流程：點場景選位置 → 調整面向（羅盤、按鈕）與微調位置 → 站在這裡。站定的角色站著不動，直到選別的行程；Puma 是複製的，站方真正的 Puma 照常走他的路。
     const ensurePuma = () => {
       if (!S.puma) {
@@ -2000,7 +2003,10 @@
 
   async function boot() {
     // 旗標可能在任何時間點出現（頁面腳本比我們晚執行），所以全程監看；一偵測到就收掉所有東西
-    const watcher = setInterval(() => { if (optedOut()) shutdown('站方已關閉外掛功能'); }, 500);
+    const watcher = setInterval(() => {
+      if (optedOut()) shutdown('站方已關閉外掛功能');
+      else if (builtIn()) shutdown('官網已內建「我的角色」');
+    }, 500);
     undo.push(() => clearInterval(watcher));
     if (optedOut()) return shutdown('站方已關閉外掛功能');
 

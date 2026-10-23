@@ -5,7 +5,8 @@
 
 在 [puma.taipei/heart-island](https://puma.taipei/heart-island)（沈伯洋「台北順起來」政策島）的 3D 場景裡，捏一個自己的角色放進去。
 
-> 這是第三方使用者腳本（userscript），不是站方官方功能，作者 readper。
+> **2026-10-23 更新**：官網已經把這支腳本收錄成站內內建功能（`heart-me.js`，原作者 readper），直接開 [puma.taipei/heart-island](https://puma.taipei/heart-island) 就能用，不用再安裝。官網版另外加了使用統計。
+> 這個 repo 的 userscript 偵測到官網已內建時會自動停用，避免重複；它保留給想自己改、或在官網版之外試新功能的人。作者 readper。
 
 ## 功能
 
@@ -71,7 +72,7 @@ Android 版 Chrome 不支援擴充功能，請改用 Firefox：
 | --- | --- |
 | 外觀 | 捏角色；開著時角色會到外島試衣，可開「與 Puma 合照」 |
 | 行程 | 自動逛逛、指定地點、前往島／建築、站方原本路線 |
-| 拍照 | 把自己或 Puma（複製）放到任意位置與面向、拍照模式 |
+| 拍照 | 把自己或 Puma 分身放到任意位置與面向、拍照模式 |
 
 ## 給站方：如何關閉
 
