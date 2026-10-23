@@ -3,6 +3,7 @@
 // @namespace    https://github.com/readper/heart-island-me
 // @version      0.7.2
 // @author       readper
+// @license      MIT
 // @homepageURL  https://github.com/readper/heart-island-me
 // @supportURL   https://github.com/readper/heart-island-me/issues
 // @downloadURL  https://raw.githubusercontent.com/readper/heart-island-me/main/heart-island-me.user.js

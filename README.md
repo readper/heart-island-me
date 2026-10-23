@@ -98,3 +98,7 @@ window.heartCity.allowMods = false;
 ## 回報問題
 
 請到 [Issues](https://github.com/readper/heart-island-me/issues)。
+
+## 授權
+
+[MIT](LICENSE)，© 2026 readper。
