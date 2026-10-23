@@ -1,5 +1,8 @@
 # HEART 政策島：我的角色
 
+已經被官方收錄
+你不再需要這個外掛了！
+
 在 [puma.taipei/heart-island](https://puma.taipei/heart-island)（沈伯洋「台北順起來」政策島）的 3D 場景裡，捏一個自己的角色放進去。
 
 > 這是第三方使用者腳本（userscript），不是站方官方功能，作者 readper。
